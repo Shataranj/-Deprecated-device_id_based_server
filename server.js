@@ -2,8 +2,10 @@ const Express = require("express");
 const app = new Express();
 const bodyParser = require("body-parser");
 const logger = require("morgan");
-const Game = require("./client");
+const Game = require("./src/Game");
 const game = new Game();
+
+const PORT = process.env.PORT || 8080;
 
 app.use(logger("dev"));
 app.use(bodyParser.text());
@@ -11,8 +13,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 
 app.get("/create", async (req, res) => {
-    await game.create();
-    res.send();
+    const gameId = await game.create();
+    res.status(201).send({gameId});
 });
 
 app.post("/makeMove", async (req, res) => {
@@ -22,6 +24,6 @@ app.post("/makeMove", async (req, res) => {
     res.send(await game.getFen());
 });
 
-app.listen(8080, () => {
-    console.log("listening on port 8080")
+app.listen(PORT, () => {
+    console.log(`listening on port ${PORT}`)
 });

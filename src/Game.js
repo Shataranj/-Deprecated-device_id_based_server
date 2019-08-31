@@ -1,12 +1,12 @@
 const request = require("request-promise");
 
-
 class Game {
     constructor() {}
 
     async create() {
         const response = await request.get('http://chess-api-chess.herokuapp.com/api/v1/chess/one');
         this.gameId = JSON.parse(response)["game_id"];
+        return this.gameId;
     };
 
     async movePiece(from, to) {
