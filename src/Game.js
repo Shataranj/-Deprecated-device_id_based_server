@@ -1,7 +1,6 @@
 const request = require("request-promise");
 
 class Game {
-    constructor() {}
 
     async create() {
         const response = await request.get('http://chess-api-chess.herokuapp.com/api/v1/chess/one');
@@ -19,7 +18,7 @@ class Game {
         };
         const response = JSON.parse(await request.post(options));
         if (response.status !== "figure moved") {
-            throw new Error(response.status);
+            throw response.status;
         }
     }
 
@@ -33,8 +32,9 @@ class Game {
         };
         const response = JSON.parse(await request.post(options));
         if (response.status !== "AI moved!") {
-            throw new Error(response.status);
+            throw response.status;
         }
+        return {from: response.from, to: response.to};
     }
 
     async getFen() {

@@ -17,11 +17,16 @@ app.get("/create", async (req, res) => {
     res.status(201).send({gameId});
 });
 
-app.post("/makeMove", async (req, res) => {
+app.patch("/makeMove", async (req, res) => {
     const {from, to} = req.body;
-    await game.movePiece(from, to);
-    await game.moveAIPiece();
-    res.send(await game.getFen());
+    try{
+        await game.movePiece(from, to);
+        const aiMove = await game.moveAIPiece();
+        res.send(aiMove);
+    } catch(err){
+        res.status(500).send(err.toString());
+    }
+    
 });
 
 app.listen(PORT, () => {
