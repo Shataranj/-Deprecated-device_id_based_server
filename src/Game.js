@@ -1,9 +1,12 @@
 const request = require("request-promise");
 
 class Game {
+    constructor(httpClient = request){
+      this.httpClient = httpClient;
+    }
 
     async create() {
-        const response = await request.get('http://chess-api-chess.herokuapp.com/api/v1/chess/one');
+        const response = await this.httpClient.get('http://chess-api-chess.herokuapp.com/api/v1/chess/one');
         this.gameId = JSON.parse(response)["game_id"];
         return this.gameId;
     };
@@ -16,7 +19,7 @@ class Game {
             },
             "body": `from=${from}&to=${to}&game_id=${this.gameId}`
         };
-        const response = JSON.parse(await request.post(options));
+        const response = JSON.parse(await this.httpClient.post(options));
         if (response.status !== "figure moved") {
             throw response.status;
         }
@@ -30,7 +33,7 @@ class Game {
             },
             "body": `game_id=${this.gameId}`
         };
-        const response = JSON.parse(await request.post(options));
+        const response = JSON.parse(await this.httpClient.post(options));
         if (response.status !== "AI moved!") {
             throw response.status;
         }
@@ -45,7 +48,7 @@ class Game {
             },
             "body": `game_id=${this.gameId}`
         };
-        const response = JSON.parse(await request.post(options));
+        const response = JSON.parse(await this.httpClient.post(options));
         return response["fen_string"];
     }
 }
