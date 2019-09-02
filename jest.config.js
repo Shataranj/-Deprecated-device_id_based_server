@@ -1,3 +1,8 @@
 module.exports = {
-	collectCoverage: true
+	collectCoverage: true,
+	coverageThreshold: {
+		global: {
+			lines: 100
+		}
+	}
 };

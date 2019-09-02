@@ -1,15 +1,19 @@
 const request = require("request-promise");
 
-class Game {
+class ProxyClient {
     constructor(httpClient = request){
       this.httpClient = httpClient;
     }
 
     async create() {
         const response = await this.httpClient.get('http://chess-api-chess.herokuapp.com/api/v1/chess/one');
-        this.gameId = JSON.parse(response)["game_id"];
-        return this.gameId;
+        return JSON.parse(response)["game_id"];
     };
+
+    with(gameId){
+        this.gameId = gameId;
+        return this;
+    }
 
     async movePiece(from, to) {
         const options = {
@@ -53,4 +57,4 @@ class Game {
     }
 }
 
-module.exports = Game;
+module.exports = ProxyClient;
