@@ -4,5 +4,6 @@ module.exports = {
 		global: {
 			lines: 100
 		}
-	}
+	},
+	collectCoverageFrom: ["src/**/*.js"]
 };
